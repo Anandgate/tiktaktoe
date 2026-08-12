@@ -1,0 +1,71 @@
+def show(board):
+    print(f"  {board[0]} | {board[1]} | {board[2]} | {board[3]}")
+    print(f" ---|---|---|---")
+    print(f"  {board[4]} | {board[5]} | {board[6]} | {board[7]}")
+    print(f" ---|---|---|---") 
+    print(f"  {board[8]} | {board[9]} | {board[10]} | {board[11]}")
+    print(f" ---|---|---|--- ")
+    print(f"  {board[12]} | {board[13]} | {board[14]} | {board[15]}")
+    
+def checkwinRows(board):
+    return (board[0] == board[1] == board[2]== board[3]!=" " or
+            board[4] == board[5] == board[6]== board[7] != " " or
+            board[8] == board[9] == board[10]== board[11] != " " or
+            board[12] == board[13] == board[14]== board[15]!=" " )
+def checkwinColumns(board):
+    return (board[0] == board[4] == board[8]== board[12] != " " or
+            board[1] == board[5] == board[9]== board[13]!= " " or
+            board[2] == board[6] == board[10]== board[14] != " " or
+            board[3] == board[7] == board[11]== board[15] != " ")
+            
+def checkwindig(board):
+    return (board[0] == board[5] == board[10]== board[15] != " " or
+            board[12] == board[9] == board[6]== board[3]!= " ")
+# Main loop
+ch = 'yes'
+while ch.lower() == 'yes':
+    board = [" "]*16
+    turns = 0  # Reset turns each game
+    print("\nWelcome to the world of Tic Tac Toe!\n")
+    name1 = input("Enter your name player1: ")
+    name2 = input("Enter your name player2: ")
+    # Player 1 chooses a character
+    character = input(f"\nChoose a character {name1} (X or O): ").upper()
+    while character not in ['X', 'O']:
+        character = input("Invalid choice. Choose either X or O: ").upper()
+    # Assign character to player 2
+    character2 = 'O' if character == 'X' else 'X'
+    show(board)
+    player = name1
+    current_char = character
+    gameover = False
+    while not gameover:
+        valid = False
+        while not valid:
+            try:
+                position = int(input(f"Enter your position {player} ({current_char}) between 1-16: ")) - 1
+                if 0 <= position <= 16 and board[position] == " ":
+                    board[position] = current_char
+                    show(board)#Shwing every step
+                    valid = True
+                else:
+                    print("Position already occupied or out of range. Enter a position between 1-16.")
+            except ValueError:
+                print("Invalid input. Please enter a number between 1 and 16.")
+        turns += 1
+        if checkwinRows(board) or checkwinColumns(board) or checkwindig(board):
+            print(f"{player} ({current_char}) wins!")
+            gameover = True
+        elif turns == 16:
+            print("It's a draw!")
+            gameover = True
+        else:
+            # Switch player and character
+            if player == name1:
+                player = name2
+                current_char = character2
+            else:
+                player = name1
+                current_char = character
+    print("\nGame is over!\n")
+    ch = input("Do you want to play again (yes/no): ")
